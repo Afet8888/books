@@ -1,22 +1,20 @@
 package az.itstep.azjava.testapp.model;
 
+
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "its_users")
-public class User {
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username;
-    private String password;
+    private String title;
+    private String text;
+    private Integer book_id;
+    private Integer user_id;
 
-
-    //ADMIN, USER
-    private String role;
 }
-

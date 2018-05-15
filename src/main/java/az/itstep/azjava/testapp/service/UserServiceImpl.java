@@ -1,5 +1,7 @@
 package az.itstep.azjava.testapp.service;
 
+import az.itstep.azjava.testapp.exceptions.IdNotFoundException;
+import az.itstep.azjava.testapp.exceptions.WrongUserDataException;
 import az.itstep.azjava.testapp.model.User;
 import az.itstep.azjava.testapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,18 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    Map<String, User> authorizedUsers;
+    private Map<String, User> authorizedUsers;
+
+    @Override
+    public User getById(Integer id) {
+        if(Objects.isNull(id)) throw new IdNotFoundException("No id entered");
+        if(id<0) throw new RuntimeException("Must be bigger than -1");
+        Optional<User> user =  userRepository.findById(id);
+        if(!user.isPresent()) throw new RuntimeException("User not found");
+        return user.get();
+    }
 
     @Override
     public User save(User user) {
@@ -32,7 +43,7 @@ public class UserServiceImpl implements UserService {
                 return token;
             }
         }
-        throw new RuntimeException("wrong username or password");
+        throw new WrongUserDataException("wrong username or password");
     }
 
     @Override

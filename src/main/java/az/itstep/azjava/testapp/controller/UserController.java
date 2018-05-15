@@ -16,11 +16,16 @@ public class UserController {
         return userService.save(user);
     }
 
-
     @PutMapping
     String signIn(@RequestBody User user) {
         return userService.signIn(user);
     }
+
+    @GetMapping ("/{id}")
+    User getById(@PathVariable Integer id) { return userService.getById(id); }
+
+    @GetMapping
+    User findByToken(@RequestBody String token) { return userService.findByToken(token);}
 
     @Autowired
     public void setUserService(UserService userService) {
